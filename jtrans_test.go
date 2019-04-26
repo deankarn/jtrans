@@ -16,13 +16,13 @@ func TestTransformtion(t *testing.T) {
 	assert.NoError(err)
 
 	tf := Transformation{
-		{Type: Mapping, From: []string{"first_name"}, To: []string{"fname"}},
-		{Type: Mapping, From: []string{"last_name"}, To: []string{"lname"}},
-		{Type: Mapping, From: []string{"nested", "data"}, To: []string{"nested_data"}},
-		{Type: Constant, From: []string{"track"}, To: []string{"type"}},
+		M.Build(Mapping, "first_name", "fname"),
+		M.Build(Mapping, "last_name", "lname"),
+		M.Build(Mapping, "nested.data", "nested_data"),
+		M.Build(Constant, "track", "type"),
 	}
 
-	results := Transform(tf, m)
+	results := tf.Transform(m)
 	b, err := json.Marshal(results)
 	assert.NoError(err)
 	assert.Equal(`{"fname":"Dean","lname":"Karn","nested_data":"nested data value","type":"track"}`, string(b))
